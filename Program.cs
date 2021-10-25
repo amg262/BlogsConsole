@@ -1,8 +1,8 @@
 ﻿using System;
 using NLog.Web;
 using System.IO;
+using Microsoft.Extensions.Configuration;
 using System.Linq;
-
 namespace BlogsConsole
 {
     class Program

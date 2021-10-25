@@ -7,7 +7,6 @@ namespace BlogsConsole
     {
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Post> Posts { get; set; }
-
         public void AddBlog(Blog blog)
         {
             this.Blogs.Add(blog);
