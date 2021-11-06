@@ -15,6 +15,8 @@ namespace BlogsConsole
 
             try
             {
+                
+                
 
                 // Create and save a new Blog
                 Console.Write("Enter a name for a new Blog: ");
@@ -23,6 +25,8 @@ namespace BlogsConsole
                 var blog = new Blog { Name = name };
 
                 var db = new BloggingContext();
+                new Post();
+                
                 db.AddBlog(blog);
                 logger.Info("Blog added - {name}", name);
 
