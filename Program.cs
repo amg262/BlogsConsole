@@ -28,6 +28,11 @@ namespace BlogsConsole
 
                 if (inputNum == 1)
                 {
+                    
+                }
+                else if (inputNum == 2)
+                {
+                    
                     // Create and save a new Blog
                     Console.Write("Enter a name for a new Blog: ");
                     var name = Console.ReadLine();
@@ -48,9 +53,6 @@ namespace BlogsConsole
                     {
                         Console.WriteLine(item.Name);
                     }
-                }
-                else if (inputNum == 2)
-                {
                 }
                 else if (inputNum == 3)
                 {
