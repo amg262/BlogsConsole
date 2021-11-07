@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -8,6 +9,13 @@ namespace BlogsConsole
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Post> Posts { get; set; }
 
+
+        public void DisplayBlogs()
+        {
+            this.Blogs.All();
+            
+
+        }
         public void AddBlog(Blog blog)
         {
             this.Blogs.Add(blog);
@@ -19,6 +27,8 @@ namespace BlogsConsole
             this.Posts.Add(post);
             this.SaveChanges();
         }
+        
+        
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
