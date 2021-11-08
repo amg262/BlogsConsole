@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,11 +11,9 @@ namespace BlogsConsole
         public DbSet<Post> Posts { get; set; }
 
 
-        public void DisplayBlogs()
+        public List<Blog> DisplayBlogs()
         {
-            this.Blogs.All();
-            
-
+            return this.Blogs.ToList();
         }
         public void AddBlog(Blog blog)
         {
@@ -27,7 +26,14 @@ namespace BlogsConsole
             this.Posts.Add(post);
             this.SaveChanges();
         }
-        
+
+        public List<Post> DisplayPosts(Blog blog)
+        {
+
+            var posts = this.Posts.Where(b=>blog.BlogId)
+            
+            return;
+        }
         
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

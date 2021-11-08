@@ -28,6 +28,16 @@ namespace BlogsConsole
 
                 if (inputNum == 1)
                 {
+                    //var blog = new Blog {Name = name};
+
+                    var db = new BloggingContext();
+                    new Post();
+
+                    foreach (var blog in db.DisplayBlogs())
+                    {
+                        Console.Write($"ID: {blog.BlogId}");
+                        Console.Write($"Name: {blog.BlogId}");
+                    }
                     
                 }
                 else if (inputNum == 2)
