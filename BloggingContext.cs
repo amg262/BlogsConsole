@@ -13,31 +13,31 @@ namespace BlogsConsole
 
         public List<Blog> DisplayBlogs()
         {
-            return this.Blogs.ToList();
+            return Blogs.ToList();
         }
 
         public void AddBlog(Blog blog)
         {
-            this.Blogs.Add(blog);
-            this.SaveChanges();
+            Blogs.Add(blog);
+            SaveChanges();
         }
 
         public void AddPost(Post post)
         {
-            this.Posts.Add(post);
-            this.SaveChanges();
+            Posts.Add(post);
+            SaveChanges();
         }
 
         public List<Post> DisplayPosts()
         {
-            return this.Posts.ToList();
+            return Posts.ToList();
         }
 
         public List<Post> FindPostsByBlogId(int id)
         {
-            var blog = this.Blogs.Single(b => b.BlogId == id);
+            var blog = Blogs.Single(b => b.BlogId == id);
 
-            List<Post> posts = new List<Post>(this.Posts.Where(p => p.BlogId == blog.BlogId));
+            var posts = new List<Post>(Posts.Where(p => p.BlogId == blog.BlogId));
 
             return posts;
         }
@@ -48,7 +48,7 @@ namespace BlogsConsole
             IConfiguration config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", true, true)
                 .Build();
-            optionsBuilder.UseSqlServer(@config["BloggingContext:ConnectionString"]);
+            optionsBuilder.UseSqlServer(config["BloggingContext:ConnectionString"]);
         }
     }
 }

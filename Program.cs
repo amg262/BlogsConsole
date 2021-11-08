@@ -1,30 +1,31 @@
 ﻿using System;
-using NLog.Web;
 using System.IO;
-using Microsoft.Extensions.Configuration;
 using System.Linq;
+using NLog;
+using NLog.Web;
 
 namespace BlogsConsole
 {
-    class Program
+    internal class Program
     {
         // create static instance of Logger
-        private static NLog.Logger logger = NLogBuilder.ConfigureNLog(Directory.GetCurrentDirectory() + "\\nlog.config")
+        private static readonly Logger logger = NLogBuilder
+            .ConfigureNLog(Directory.GetCurrentDirectory() + "\\nlog.config")
             .GetCurrentClassLogger();
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             logger.Info("Program started");
 
             try
             {
-                Console.WriteLine($"1. Display Blogs");
-                Console.WriteLine($"2. Add Blog");
-                Console.WriteLine($"3. Create Post for a blog");
-                Console.WriteLine($"4. Display Posts for a blog");
+                Console.WriteLine("1. Display Blogs");
+                Console.WriteLine("2. Add Blog");
+                Console.WriteLine("3. Create Post for a blog");
+                Console.WriteLine("4. Display Posts for a blog");
 
-                Int32.TryParse(Console.ReadLine(), out int inputNum);
-
+                // This is an extra layer of user & exception handling that will not allow non-# input
+                int.TryParse(Console.ReadLine(), out int inputNum);
 
                 if (inputNum == 1)
                 {
@@ -62,30 +63,28 @@ namespace BlogsConsole
                     var query = db.Blogs.OrderBy(b => b.Name);
 
                     Console.WriteLine("All blogs in the database:");
-                    foreach (var item in query)
-                    {
-                        Console.WriteLine(item.Name);
-                    }
+                    foreach (var item in query) Console.WriteLine(item.Name);
                 }
                 else if (inputNum == 3)
                 {
                     Console.WriteLine("BlogId: ");
-                    Int32.TryParse(Console.ReadLine(), out int blogId);
+                    
+                    // This is an extra layer of user & exception handling that will not allow non-# input
+                    int.TryParse(Console.ReadLine(), out int blogId);
 
 
                     Console.WriteLine("Title: ");
-                    string postTitle = Console.ReadLine();
+                    var postTitle = Console.ReadLine();
 
 
                     Console.WriteLine("Content: ");
-                    string postContent = Console.ReadLine();
+                    var postContent = Console.ReadLine();
 
                     try
                     {
                         var blog = new Blog {BlogId = blogId};
 
-                        var post = new Post()
-                            {BlogId = blog.BlogId, Content = postContent, Title = postTitle};
+                        var post = new Post {BlogId = blog.BlogId, Content = postContent, Title = postTitle};
                         var db = new BloggingContext();
                         new Post();
 
@@ -101,7 +100,9 @@ namespace BlogsConsole
                 else if (inputNum == 4)
                 {
                     Console.WriteLine("Enter BlogId to display posts from: ");
-                    Int32.TryParse(Console.ReadLine(), out int blogId);
+                    
+                    // This is an extra layer of user & exception handling that will not allow non-# input
+                    int.TryParse(Console.ReadLine(), out int blogId);
 
                     try
                     {
@@ -111,7 +112,7 @@ namespace BlogsConsole
 
                         db.FindPostsByBlogId(blogId);
 
-                        int count = 0;
+                        var count = 0;
                         foreach (var post in db.FindPostsByBlogId(blogId))
                         {
                             if (count == 0) Console.WriteLine($"BlogId: {post.Blog.BlogId}  Name: {post.Blog.Name}");
@@ -132,13 +133,11 @@ namespace BlogsConsole
                         throw;
                     }
                 }
-                else
-                {
-                }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                logger.Error(ex);
+                logger.Error(e);
+                throw e;
             }
 
             logger.Info("Program ended");
