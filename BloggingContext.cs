@@ -28,9 +28,9 @@ namespace BlogsConsole
             this.SaveChanges();
         }
 
-        public List<Post> DisplayPosts(Blog blog)
+        public List<Post> DisplayPosts()
         {
-            return null;
+            return this.Posts.ToList();
         }
 
 

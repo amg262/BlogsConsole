@@ -88,6 +88,20 @@ namespace BlogsConsole
                 }
                 else if (inputNum == 4)
                 {
+
+                    Console.WriteLine("Blog ID: ");
+                    Int32.TryParse(Console.ReadLine(), out int blogId);
+                    var db = new BloggingContext();
+
+                    new Post();
+
+                    foreach (var post in db.DisplayPosts())
+                    {
+                        Console.Write($"Blog ID: {post.BlogId}");
+                        Console.Write($"Post ID: {post.PostId}");
+                        Console.Write($"Post Title: {post.Title}");
+                        Console.Write($"Post Content: {post.Content}");
+                    }
                 }
                 else
                 {
