@@ -30,7 +30,9 @@ namespace BlogsConsole
                 {
                     //var blog = new Blog {Name = name};
 
+
                     var db = new BloggingContext();
+
                     new Post();
 
                     foreach (var blog in db.DisplayBlogs())
@@ -38,11 +40,9 @@ namespace BlogsConsole
                         Console.Write($"ID: {blog.BlogId}");
                         Console.Write($"Name: {blog.BlogId}");
                     }
-                    
                 }
                 else if (inputNum == 2)
                 {
-                    
                     // Create and save a new Blog
                     Console.Write("Enter a name for a new Blog: ");
                     var name = Console.ReadLine();
@@ -66,6 +66,25 @@ namespace BlogsConsole
                 }
                 else if (inputNum == 3)
                 {
+                    Console.WriteLine("Blog ID: ");
+                    Int32.TryParse(Console.ReadLine(), out int blogId);
+
+
+                    Console.WriteLine("Post Title: ");
+                    string postTitle = Console.ReadLine();
+
+
+                    Console.WriteLine("Post Content: ");
+                    string postContent = Console.ReadLine();
+
+                    var blog = new Blog {BlogId = blogId};
+
+                    var post = new Post()
+                        {BlogId = blog.BlogId, Content = postContent, Title = postTitle};
+                    var db = new BloggingContext();
+                    new Post();
+
+                    db.AddPost(post);
                 }
                 else if (inputNum == 4)
                 {
@@ -76,7 +95,7 @@ namespace BlogsConsole
             }
             catch (Exception ex)
             {
-                logger.Error(ex.Message);
+                logger.Error(ex);
             }
 
             logger.Info("Program ended");

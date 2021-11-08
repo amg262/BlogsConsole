@@ -15,6 +15,7 @@ namespace BlogsConsole
         {
             return this.Blogs.ToList();
         }
+
         public void AddBlog(Blog blog)
         {
             this.Blogs.Add(blog);
@@ -29,12 +30,9 @@ namespace BlogsConsole
 
         public List<Post> DisplayPosts(Blog blog)
         {
-
-            var posts = this.Posts.Where(b=>blog.BlogId)
-            
-            return;
+            return null;
         }
-        
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
