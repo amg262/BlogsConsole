@@ -20,25 +20,30 @@ namespace BlogsConsole
             {
                 Console.WriteLine($"1. Display Blogs");
                 Console.WriteLine($"2. Add Blog");
-                Console.WriteLine($"3. Create Post");
-                Console.WriteLine($"4. Display Posts");
+                Console.WriteLine($"3. Create Post for a blog");
+                Console.WriteLine($"4. Display Posts for a blog");
 
                 Int32.TryParse(Console.ReadLine(), out int inputNum);
 
 
                 if (inputNum == 1)
                 {
-                    //var blog = new Blog {Name = name};
-
-
-                    var db = new BloggingContext();
-
-                    new Post();
-
-                    foreach (var blog in db.DisplayBlogs())
+                    try
                     {
-                        Console.Write($"ID: {blog.BlogId}");
-                        Console.Write($"Name: {blog.BlogId}");
+                        var db = new BloggingContext();
+                        new Post();
+
+                        foreach (var blog in db.DisplayBlogs())
+                        {
+                            Console.Write($"ID: {blog.BlogId}");
+                            Console.Write($"Name: {blog.BlogId}");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        logger.Error(e);
+                        Console.WriteLine(e);
+                        throw;
                     }
                 }
                 else if (inputNum == 2)
@@ -53,9 +58,7 @@ namespace BlogsConsole
                     new Post();
 
                     db.AddBlog(blog);
-                    logger.Info("Blog added - {name}", name);
 
-                    // Display all Blogs from the database
                     var query = db.Blogs.OrderBy(b => b.Name);
 
                     Console.WriteLine("All blogs in the database:");
@@ -66,41 +69,67 @@ namespace BlogsConsole
                 }
                 else if (inputNum == 3)
                 {
-                    Console.WriteLine("Blog ID: ");
+                    Console.WriteLine("BlogId: ");
                     Int32.TryParse(Console.ReadLine(), out int blogId);
 
 
-                    Console.WriteLine("Post Title: ");
+                    Console.WriteLine("Title: ");
                     string postTitle = Console.ReadLine();
 
 
-                    Console.WriteLine("Post Content: ");
+                    Console.WriteLine("Content: ");
                     string postContent = Console.ReadLine();
 
-                    var blog = new Blog {BlogId = blogId};
+                    try
+                    {
+                        var blog = new Blog {BlogId = blogId};
 
-                    var post = new Post()
-                        {BlogId = blog.BlogId, Content = postContent, Title = postTitle};
-                    var db = new BloggingContext();
-                    new Post();
+                        var post = new Post()
+                            {BlogId = blog.BlogId, Content = postContent, Title = postTitle};
+                        var db = new BloggingContext();
+                        new Post();
 
-                    db.AddPost(post);
+                        db.AddPost(post);
+                    }
+                    catch (Exception e)
+                    {
+                        logger.Error(e);
+                        Console.WriteLine(e);
+                        throw;
+                    }
                 }
                 else if (inputNum == 4)
                 {
-
-                    Console.WriteLine("Blog ID: ");
+                    Console.WriteLine("Enter BlogId to display posts from: ");
                     Int32.TryParse(Console.ReadLine(), out int blogId);
-                    var db = new BloggingContext();
 
-                    new Post();
-
-                    foreach (var post in db.DisplayPosts())
+                    try
                     {
-                        Console.Write($"Blog ID: {post.BlogId}");
-                        Console.Write($"Post ID: {post.PostId}");
-                        Console.Write($"Post Title: {post.Title}");
-                        Console.Write($"Post Content: {post.Content}");
+                        var db = new BloggingContext();
+
+                        new Post();
+
+                        db.FindPostsByBlogId(blogId);
+
+                        int count = 0;
+                        foreach (var post in db.FindPostsByBlogId(blogId))
+                        {
+                            if (count == 0) Console.WriteLine($"BlogId: {post.Blog.BlogId}  Name: {post.Blog.Name}");
+
+                            Console.WriteLine($"ID: {post.PostId}");
+                            Console.WriteLine($"Title: {post.Title}");
+                            Console.WriteLine($"Content: {post.Content}");
+
+                            count++;
+                        }
+
+                        Console.WriteLine($"Post(s): {count}");
+                    }
+                    catch (Exception e)
+                    {
+                        logger.Error(e);
+                        Console.WriteLine(e);
+                        throw;
                     }
                 }
                 else

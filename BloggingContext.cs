@@ -33,6 +33,15 @@ namespace BlogsConsole
             return this.Posts.ToList();
         }
 
+        public List<Post> FindPostsByBlogId(int id)
+        {
+            var blog = this.Blogs.Single(b => b.BlogId == id);
+
+            List<Post> posts = new List<Post>(this.Posts.Where(p => p.BlogId == blog.BlogId));
+
+            return posts;
+        }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
